@@ -128,9 +128,9 @@ export default function Home() {
                   <SelectValue placeholder="Choose Input Type" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="text">Text</SelectItem>
                   <SelectItem value="pdf">PDF</SelectItem>
                   <SelectItem value="url">URL</SelectItem>
+                  <SelectItem value="text">Text</SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -186,7 +186,6 @@ export default function Home() {
                 />
               </div>
             )}
-           
 
             <RainbowButton type="submit">
               {" "}
