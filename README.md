@@ -25,12 +25,10 @@ NotebookLite is a lightweight Retrieval-Augmented Generation (RAG) application b
 
 2. Install dependencies:
 
-   ```bash
    npm install
 
-
 3. Set up environment variables:
-````
+
    Create a `.env.local` file in the root directory and add the following:
 
    ```env
