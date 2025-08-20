@@ -19,6 +19,16 @@ import { useEffect, useRef, useState } from "react";
 export default function Home() {
   const [messages, setMessage] = useState([]);
   const [input, setInput] = useState("");
+
+  useEffect(() => {
+    const saved = localStorage.getItem("messages");
+    if (saved) setMessage(JSON.parse(saved));
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem("messages", JSON.stringify(messages));
+  }, [messages]);
+
   const [loading, setLoading] = useState(false);
   const [textData, setTextData] = useState("");
   const [url, setUrl] = useState("");
@@ -54,7 +64,6 @@ export default function Home() {
       console.log("res", res);
 
       if (res.data.success) {
-        console.log("ask questions now");
         setLoading(false);
       }
     } catch (error) {
@@ -111,10 +120,7 @@ export default function Home() {
       <div className="w-full  mt-5 min-h-fit flex flex-col md:flex-row gap-6 p-6 rounded-2xl shadow-lg">
         {/* Left Section */}
         <div className="flex flex-col gap-4 w-100 h-fit  text-white bg-neutral-800 p-6 rounded-xl shadow-md">
-          <form
-            onSubmit={(e) => dataOnSubmit(e, { textData, pdf, url })}
-            className="flex flex-col gap-4"
-          >
+          <form onSubmit={dataOnSubmit} className="flex flex-col gap-4">
             {/* Input type selector */}
             <div className="flex gap-4 items-center">
               <Select value={inputType} onValueChange={setInputType}>
@@ -151,7 +157,9 @@ export default function Home() {
                 <div className="flex items-center gap-5">
                   <Input
                     id="picture"
-                    onChange={(e) => setPdf(e.target.files[0])}
+                    onChange={(e) => {
+                      if (e.target.files.length > 0) setPdf(e.target.files[0]);
+                    }}
                     type="file"
                     accept="application/pdf"
                     className="bg-black"
@@ -196,7 +204,8 @@ export default function Home() {
               <>
                 {messages.map((msg, idx) => (
                   <div
-                    key={idx}
+                    // key={idx}
+                    key={idx + msg.role + msg.content.slice(0, 10)}
                     className={`mb-3 ${
                       msg.role === "user" ? "text-right" : "text-left"
                     }`}
@@ -234,7 +243,11 @@ export default function Home() {
             />
 
             {/* <button className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg font-medium transition duration-200"></button> */}
-            <ShimmerButton className="shadow-2xl" type="submit">
+            <ShimmerButton
+              disabled={!pdf && !url && !textData}
+              className="shadow-2xl"
+              type="submit"
+            >
               <span className="whitespace-pre-wrap text-center text-sm font-medium leading-none tracking-tight text-white dark:from-white dark:to-slate-900/10 lg:text-lg">
                 <Send />
               </span>
