@@ -47,7 +47,7 @@ NotebookLite is a lightweight Retrieval-Augmented Generation (RAG) application b
    ```
 
    Open [http://localhost:3000](http://localhost:3000) in your browser to see the application in action.
-
+````
 ## Usage
 
 * **Text Input**: Enter your data directly into the text area and submit.
@@ -60,9 +60,3 @@ The application will process the input and provide relevant responses based on t
 
 Contributions are welcome! Please fork the repository, make your changes, and submit a pull request.
 
-## License
-
-This project is licensed under the MIT License.
-
-```
-```
