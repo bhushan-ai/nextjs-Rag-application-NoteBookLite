@@ -21,8 +21,8 @@ export async function POST(request) {
     const { input } = await request.json();
 
     const qdrantClient = new QdrantClient({
-      url: process.env.CLUSTER_API_KEY,
-      apiKey: process.env.QDRANT_CLUSTER_URL,
+      url: process.env.QDRANT_CLUSTER_URL,
+      apiKey: process.env.CLUSTER_API_KEY,
     });
     const vectorStore = await QdrantVectorStore.fromExistingCollection(
       embeddings,
