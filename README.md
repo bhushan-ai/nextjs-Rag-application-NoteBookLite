@@ -1,36 +1,58 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# NotebookLite: RAG Application with Next.js
 
-## Getting Started
+NotebookLite is a lightweight Retrieval-Augmented Generation (RAG) application built with Next.js. It allows users to interact with their data through a chat interface, supporting text, PDF, and URL inputs. The application utilizes Qdrant for vector storage and Google Generative AI embeddings for semantic understanding.
 
-First, run the development server:
+## Visit : 
+https://nextjs-rag-application-note-book-li.vercel.app/
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## Features
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+-**Multi-input Support**: Accepts text, PDF, and URL inputs for data processing.
+-**Semantic Search**: Utilizes Google Generative AI embeddings for understanding and retrieving relevant information.
+-**Chat Interface**: Engages users in a conversational manner, providing responses based on the provided data.
+-**Persistent Storage**: Stores user messages locally for a seamless chat experience.
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+## Technologies Used
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- **Frontend**: Next.js, React, Tailwind CSS
+- **Backend**: Node.js, Qdrant, Google Generative AI
+- **Libraries**: Langchain, Axios
 
-## Learn More
+## Installation
 
-To learn more about Next.js, take a look at the following resources:
+1. Clone the repository:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+   ```bash
+   git clone https://github.com/bhushan-ai/nextjs-Rag-application-NoteBookLite.git
+   cd nextjs-Rag-application-NoteBookLite
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+2. Install dependencies:
 
-## Deploy on Vercel
+   npm install
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+3. Set up environment variables:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+   Create a `.env.local` file in the root directory and add the following:
+
+   ```env
+   GEMINI_API_KEY=your_google_genai_api_key
+   QDRANT_CLUSTER_URL=your_qdrant_cluster_url
+   CLUSTER_API_KEY=your_qdrant_api_key
+
+
+4. Run the development server:
+
+   ```bash
+   npm run dev
+   
+## Usage
+
+* **Text Input**: Enter your data directly into the text area and submit.  
+* **PDF Input**: Upload a PDF file containing your data.  
+* **URL Input**: Provide a URL pointing to the data you wish to use.  
+
+The application will process the input and provide relevant responses based on the provided data.
+
+## Contributing
+
+Contributions are welcome! Please fork the repository and submit a pull request.
