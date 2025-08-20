@@ -2,6 +2,9 @@
 
 NotebookLite is a lightweight Retrieval-Augmented Generation (RAG) application built with Next.js. It allows users to interact with their data through a chat interface, supporting text, PDF, and URL inputs. The application utilizes Qdrant for vector storage and Google Generative AI embeddings for semantic understanding.
 
+## Visit : 
+https://nextjs-rag-application-note-book-li.vercel.app/
+
 ## Features
 
 -**Multi-input Support**: Accepts text, PDF, and URL inputs for data processing.
