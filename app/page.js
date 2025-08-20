@@ -33,7 +33,7 @@ export default function Home() {
   const [textData, setTextData] = useState("");
   const [url, setUrl] = useState("");
   const [pdf, setPdf] = useState(null);
-  const [inputType, setInputType] = useState("text");
+  const [inputType, setInputType] = useState("pdf");
 
   const messagesEndRef = useRef(null);
 
@@ -112,14 +112,12 @@ export default function Home() {
 
   return (
     <div>
-      <div className="m-3 p-3">
-        <h1 className="text-2xl font-bold tracking-tighter ">
-          Chat with your <AuroraText>Data</AuroraText>
-        </h1>
-      </div>
-      <div className="w-full  mt-5 min-h-fit flex flex-col md:flex-row gap-6 p-6 rounded-2xl shadow-lg">
+      <h1 className="text-2xl font-bold tracking-tighter ml-2 p-2 mb-0 ">
+        Chat with <AuroraText>Data</AuroraText>
+      </h1>
+      <div className="w-full gap-4 md:gap-0 min-h-fit flex flex-col md:flex-row p-2 rounded-2xl shadow-lg">
         {/* Left Section */}
-        <div className="flex flex-col gap-4 w-100 h-fit  text-white bg-neutral-800 p-6 rounded-xl shadow-md">
+        <div className="flex flex-col gap-4 w-100 h-fit mr-7  text-white bg-neutral-800 p-4 rounded-xl shadow-md">
           <form onSubmit={dataOnSubmit} className="flex flex-col gap-4">
             {/* Input type selector */}
             <div className="flex gap-4 items-center">
@@ -134,19 +132,6 @@ export default function Home() {
                 </SelectContent>
               </Select>
             </div>
-
-            {/* Conditional inputs */}
-            {inputType === "text" && (
-              <div className="flex flex-col gap-3 text-white">
-                <label className="font-semibold">Message</label>
-                <textarea
-                  className="w-full h-60 p-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none resize-none"
-                  placeholder="Write your message..."
-                  value={textData}
-                  onChange={(e) => setTextData(e.target.value)}
-                />
-              </div>
-            )}
 
             {inputType === "pdf" && (
               <div className="flex flex-col gap-3">
@@ -187,6 +172,18 @@ export default function Home() {
               </div>
             )}
 
+            {inputType === "text" && (
+              <div className="flex flex-col gap-3 text-white">
+                <label className="font-semibold">Message</label>
+                <textarea
+                  className="w-full h-60 p-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none resize-none"
+                  placeholder="Write your message..."
+                  value={textData}
+                  onChange={(e) => setTextData(e.target.value)}
+                />
+              </div>
+            )}
+
             <RainbowButton type="submit">
               {" "}
               {loading ? "Uploading..." : "Submit Data"}
@@ -194,8 +191,8 @@ export default function Home() {
           </form>
         </div>
 
-        <div className="flex flex-col h-fit w-full bg-neutral-800 p-2  rounded-xl shadow-md">
-          <div className="border rounded-lg m-3 md:m-2 p-4 h-110 overflow-y-auto shadow scrollbar-hidden ">
+        <div className="flex flex-col h-fit w-full sm:w-[90%] md:w-[80%] lg:w-[70%] bg-neutral-800 p-2 rounded-xl shadow-md">
+          <div className=" rounded-lg  sm:m-2 p-2 h-130 overflow-y-auto shadow scrollbar-hidden">
             {messages.length === 0 ? (
               <p className="text-gray-400 text-center">No messages yet...</p>
             ) : (
@@ -251,6 +248,23 @@ export default function Home() {
           </form>
         </div>
       </div>
+      <p className="text-gray-500 mb-2 text-center flex items-center justify-center gap-2">
+        created by bhushann.ai
+        <a
+          href="https://x.com/bhushann_ai"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 50 50"
+            className="w-5 h-5 text-white hover:text-gray-400"
+            fill="currentColor"
+          >
+            <path d="M 5.9199219 6 L 20.582031 27.375 L 6.2304688 44 L 9.4101562 44 L 21.986328 29.421875 L 31.986328 44 L 44 44 L 28.681641 21.669922 L 42.199219 6 L 39.029297 6 L 27.275391 19.617188 L 17.933594 6 L 5.9199219 6 z M 9.7167969 8 L 16.880859 8 L 40.203125 42 L 33.039062 42 L 9.7167969 8 z"></path>
+          </svg>
+        </a>
+      </p>
     </div>
   );
 }
