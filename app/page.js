@@ -61,7 +61,7 @@ export default function Home() {
           "Content-Type": "multipart/form-data",
         },
       });
-      console.log("res", res);
+      //console.log("res", res);
 
       if (res.data.success) {
         setLoading(false);
@@ -186,8 +186,7 @@ export default function Home() {
                 />
               </div>
             )}
-
-            {/* Submit button */}
+           
 
             <RainbowButton type="submit">
               {" "}
@@ -204,7 +203,6 @@ export default function Home() {
               <>
                 {messages.map((msg, idx) => (
                   <div
-                    // key={idx}
                     key={idx + msg.role + msg.content.slice(0, 10)}
                     className={`mb-3 ${
                       msg.role === "user" ? "text-right" : "text-left"
@@ -242,7 +240,6 @@ export default function Home() {
               placeholder="chat with your data..."
             />
 
-            {/* <button className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg font-medium transition duration-200"></button> */}
             <ShimmerButton
               disabled={!pdf && !url && !textData}
               className="shadow-2xl"
