@@ -1,22 +1,22 @@
 ````markdown
-# NotebookLite: RAG Application with Next.js
+#NotebookLite: RAG Application with Next.js
 
 NotebookLite is a lightweight Retrieval-Augmented Generation (RAG) application built with Next.js. It allows users to interact with their data through a chat interface, supporting text, PDF, and URL inputs. The application utilizes Qdrant for vector storage and Google Generative AI embeddings for semantic understanding.
 
-## Features
+##Features
 
-- **Multi-input Support**: Accepts text, PDF, and URL inputs for data processing.
-- **Semantic Search**: Utilizes Google Generative AI embeddings for understanding and retrieving relevant information.
-- **Chat Interface**: Engages users in a conversational manner, providing responses based on the provided data.
-- **Persistent Storage**: Stores user messages locally for a seamless chat experience.
+-**Multi-input Support**: Accepts text, PDF, and URL inputs for data processing.
+-**Semantic Search**: Utilizes Google Generative AI embeddings for understanding and retrieving relevant information.
+-**Chat Interface**: Engages users in a conversational manner, providing responses based on the provided data.
+-**Persistent Storage**: Stores user messages locally for a seamless chat experience.
 
-## Technologies Used
+##Technologies Used
 
 - **Frontend**: Next.js, React, Tailwind CSS
 - **Backend**: Node.js, Qdrant, Google Generative AI
 - **Libraries**: Langchain, Axios
 
-## Installation
+##Installation
 
 1. Clone the repository:
 
