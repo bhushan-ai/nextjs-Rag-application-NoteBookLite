@@ -41,18 +41,15 @@ NotebookLite is a lightweight Retrieval-Augmented Generation (RAG) application b
 
    ```bash
    npm run dev
-
+   
 ## Usage
-````
-* **Text Input**: Enter your data directly into the text area and submit.
-* **PDF Input**: Upload a PDF file containing your data.
-* **URL Input**: Provide a URL pointing to the data you wish to use.
+
+* **Text Input**: Enter your data directly into the text area and submit.  
+* **PDF Input**: Upload a PDF file containing your data.  
+* **URL Input**: Provide a URL pointing to the data you wish to use.  
 
 The application will process the input and provide relevant responses based on the provided data.
 
 ## Contributing
 
-Contributions are welcome! Please fork th
-   ```bash
-   npm run dev
-   ```
+Contributions are welcome! Please fork the repository and submit a pull request.
