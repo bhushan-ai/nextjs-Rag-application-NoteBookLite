@@ -3,6 +3,7 @@
 import { AuroraText } from "@/components/magicui/aurora-text";
 import { RainbowButton } from "@/components/magicui/rainbow-button";
 import { ShimmerButton } from "@/components/magicui/shimmer-button";
+import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {
@@ -30,6 +31,7 @@ export default function Home() {
   }, [messages]);
 
   const [loading, setLoading] = useState(false);
+  const [uploading, setUploading] = useState(false);
   const [textData, setTextData] = useState("");
   const [url, setUrl] = useState("");
   const [pdf, setPdf] = useState(null);
@@ -43,7 +45,7 @@ export default function Home() {
 
   async function dataOnSubmit(e) {
     e.preventDefault();
-    setLoading(true);
+    setUploading(true);
 
     try {
       const formData = new FormData();
@@ -64,11 +66,11 @@ export default function Home() {
       //console.log("res", res);
 
       if (res.data.success) {
-        setLoading(false);
+        setUploading(false);
       }
     } catch (error) {
       console.log("something went wrong to upload data", error);
-      setLoading(false);
+      setUploading(false);
     }
   }
 
@@ -186,15 +188,23 @@ export default function Home() {
 
             <RainbowButton type="submit">
               {" "}
-              {loading ? "Uploading..." : "Submit Data"}
+              {uploading ? "Uploading..." : "Submit Data"}
             </RainbowButton>
           </form>
+
+          {messages.length > 0 && (
+            <Button variant="destructive" onClick={() => setMessage([])}>
+              Clear chat
+            </Button>
+          )}
         </div>
 
         <div className="flex flex-col h-fit w-full sm:w-[90%] md:w-[80%] lg:w-[70%] bg-neutral-800 p-2 rounded-xl shadow-md">
           <div className=" rounded-lg  sm:m-2 p-2 h-130 overflow-y-auto shadow scrollbar-hidden">
             {messages.length === 0 ? (
-              <p className="text-gray-400 text-center">No messages yet...</p>
+              <p className="text-gray-400 text-center">
+                Upload file or data first
+              </p>
             ) : (
               <>
                 {messages.map((msg, idx) => (

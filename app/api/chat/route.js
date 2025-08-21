@@ -39,13 +39,25 @@ export async function POST(request) {
     const relevantChunks = await vectorSearcher.invoke(input);
     const context = relevantChunks.map((c) => c.pageContent).join("\n\n");
 
-    const SYSTEM_PROMPT = `you are an AI assistant who helps resolving user query based on the context available to you from a Text Data or URL or PDF file for pdf file answer with the content or page number and for URl answer with section.
-     
-     Only answer based on the available Context from URL or PDF or Text Data  only
-     
+    const SYSTEM_PROMPT = `you are an AI assistant who helps resolving user query based on the context available to you if the users context is Website then you have to ans it with the section from which you got that information, if the user context is about PDF you need to ans the user query the the page no of that pdf, if the user context is about Textdata you just ans it.
+    Rules:
+    Only answer based on the available Context from URL or PDF or Text
      Context:
        ${context}
      `;
+     
+    //     const SYSTEM_PROMPT = `You are an AI assistant who helps resolve user queries based on the available context.
+
+    // Rules:
+    // 1. Only answer based on the available Context from URL or PDF or Text.
+    // 2. If the context is from a Website, include the section name/heading from which the information is found.
+    // 3. If the context is from a PDF, include the page number where the information is found.
+    // 4. If the context is from Textdata, answer directly with the information.
+    // 5. If the user query is about coding, always answer in coding format using markdown code blocks (e.g. \`\`\`javascript ... \`\`\`), and explain only if needed.
+
+    // Context:
+    //   ${context}
+    // `;
 
     const response = await client.chat.completions.create({
       model: "gpt-4.1-mini",
