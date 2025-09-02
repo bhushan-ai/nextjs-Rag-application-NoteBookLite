@@ -5,7 +5,6 @@ import { RainbowButton } from "@/components/magicui/rainbow-button";
 import { ShimmerButton } from "@/components/magicui/shimmer-button";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import {
   Select,
   SelectContent,
@@ -16,6 +15,12 @@ import {
 import axios from "axios";
 import { Send, X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
+import PdfInput from "./components/PdfInput";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 export default function Home() {
   const [messages, setMessage] = useState([]);
@@ -35,6 +40,7 @@ export default function Home() {
   const [textData, setTextData] = useState("");
   const [url, setUrl] = useState("");
   const [pdf, setPdf] = useState(null);
+  const [pdfLoading, setPdfLoading] = useState(false);
   const [inputType, setInputType] = useState("pdf");
 
   const messagesEndRef = useRef(null);
@@ -136,39 +142,21 @@ export default function Home() {
             </div>
 
             {inputType === "pdf" && (
-              <div className="flex flex-col gap-3">
-                <Label htmlFor="picture" className="font-semibold text-white">
-                  Upload PDF
-                </Label>
-
-                <div className="flex items-center gap-5">
-                  <Input
-                    id="picture"
-                    onChange={(e) => {
-                      if (e.target.files.length > 0) setPdf(e.target.files[0]);
-                    }}
-                    type="file"
-                    accept="application/pdf"
-                    className="bg-black"
-                  />
-
-                  {pdf && (
-                    <button type="button" onClick={() => setPdf(null)}>
-                      <X className="w-5 h-5" />
-                    </button>
-                  )}
-                </div>
-              </div>
+              <PdfInput
+                pdf={pdf}
+                pdfLoading={pdfLoading}
+                setPdfLoading={setPdfLoading}
+                setPdf={setPdf}
+              />
             )}
 
             {inputType === "url" && (
               <div className="flex flex-col gap-3">
                 <label className="font-semibold text-white">Enter URL</label>
-                <input
+                <Input
                   type="url"
                   value={url}
                   onChange={(e) => setUrl(e.target.value)}
-                  className="w-full p-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none"
                   placeholder="https://example.com"
                 />
               </div>
@@ -200,10 +188,12 @@ export default function Home() {
         </div>
 
         <div className="flex flex-col h-fit w-full sm:w-[90%] md:w-[80%] lg:w-[70%] bg-neutral-800 p-2 rounded-xl shadow-md">
-          <div className=" rounded-lg  sm:m-2 p-2 h-130 overflow-y-auto shadow scrollbar-hidden">
+          <div className="rounded-lg sm:m-2 p-2 h-[500px] overflow-y-auto shadow scrollbar-hidden">
             {messages.length === 0 ? (
-              <p className="text-gray-400 text-center">
-                Upload file or data first
+              <p className="text-2xl text-gray-400 font-bold text-center">
+                {uploading
+                  ? "Upload file or data first"
+                  : "data uploaded now ask.. "}
               </p>
             ) : (
               <>
@@ -215,11 +205,12 @@ export default function Home() {
                     }`}
                   >
                     <div
-                      className={`inline-block px-4 py-3 rounded-2xl shadow-md transition-all duration-300 ${
-                        msg.role === "user"
-                          ? "bg-gradient-to-r from-[#0f2027] via-[#203a43] to-[#2c5364] text-white shadow-[0_0_10px_#38bdf8]"
-                          : "bg-gradient-to-r from-gray-700 via-gray-800 to-gray-900 text-gray-100 shadow-[0_0_10px_#555]"
-                      }`}
+                      className={`inline-block max-w-[75%] px-4 py-3 rounded-2xl shadow-md transition-all duration-300
+                     ${
+                       msg.role === "user"
+                         ? "bg-gradient-to-r from-[#0a0a0a] via-[#1a1a1a] to-[#2a2a2a] text-white shadow-[0_0_15px_rgba(17,17,17,0.6)] self-end"
+                         : "bg-gradient-to-r from-[#181818] via-[#242323] to-[#313131] text-gray-200 shadow-[0_0_15px_rgba(85,85,85,0.4)] self-start"
+                     }`}
                     >
                       {msg.content}
                     </div>
@@ -246,20 +237,29 @@ export default function Home() {
               placeholder="chat with your data..."
             />
 
-            <ShimmerButton
-              disabled={!pdf && !url && !textData}
-              className="shadow-2xl"
-              type="submit"
-            >
-              <span className="whitespace-pre-wrap text-center text-sm font-medium leading-none tracking-tight text-white dark:from-white dark:to-slate-900/10 lg:text-lg">
-                <Send />
-              </span>
-            </ShimmerButton>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <ShimmerButton
+                  disabled={!pdf && !url && !textData}
+                  className="shadow-2xl"
+                  type="submit"
+                >
+                  <span className="whitespace-pre-wrap text-center text-sm font-medium leading-none tracking-tight text-white dark:from-white dark:to-slate-900/10 lg:text-lg">
+                    <Send />
+                  </span>
+                </ShimmerButton>
+              </TooltipTrigger>
+              {!pdf && !url && !textData && (
+                <TooltipContent>
+                  <p>Add Data first</p>
+                </TooltipContent>
+              )}
+            </Tooltip>
           </form>
         </div>
       </div>
       <p className="text-gray-500 mb-2 text-center flex items-center justify-center gap-2">
-        created by bhushann.ai
+        Made by bhushann.ai
         <a
           href="https://x.com/bhushann_ai"
           target="_blank"

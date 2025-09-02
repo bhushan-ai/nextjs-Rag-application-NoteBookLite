@@ -5,10 +5,15 @@ import { GoogleGenerativeAIEmbeddings } from "@langchain/google-genai";
 import { QdrantVectorStore } from "@langchain/qdrant";
 import OpenAI from "openai";
 import { QdrantClient } from "@qdrant/js-client-rest";
+import { GoogleGenAI } from "@google/genai";
 
 const embeddings = new GoogleGenerativeAIEmbeddings({
   apiKey: process.env.GEMINI_API_KEY,
   model: "models/embedding-001",
+});
+
+const googleClient = new GoogleGenAI({
+  apiKey: process.env.GEMINI_API_KEY,
 });
 
 const client = new OpenAI({
@@ -16,14 +21,32 @@ const client = new OpenAI({
   baseURL: "https://openrouter.ai/api/v1",
 });
 
+const qdrantClient = new QdrantClient({
+  url: process.env.QDRANT_CLUSTER_URL,
+  apiKey: process.env.CLUSTER_API_KEY,
+});
+
 export async function POST(request) {
   try {
     const { input } = await request.json();
 
-    const qdrantClient = new QdrantClient({
-      url: process.env.QDRANT_CLUSTER_URL,
-      apiKey: process.env.CLUSTER_API_KEY,
+    const googleRes = await googleClient.models.generateContent({
+      model: "gemini-2.0-flash",
+      contents: [
+        {
+          role: "user",
+          parts: [
+            {
+              text: `You are an Ai assistant who takes the user query and correct the typos and spelling mistakes. here is the query:${input}`,
+            },
+          ],
+        },
+      ],
     });
+
+    const reWriteInput = googleRes.text;
+    console.log("reWriteInput", reWriteInput);
+
     const vectorStore = await QdrantVectorStore.fromExistingCollection(
       embeddings,
       {
@@ -36,28 +59,22 @@ export async function POST(request) {
       k: 3,
     });
 
-    const relevantChunks = await vectorSearcher.invoke(input);
+    const relevantChunks = await vectorSearcher.invoke(reWriteInput);
     const context = relevantChunks.map((c) => c.pageContent).join("\n\n");
 
     const SYSTEM_PROMPT = `you are an AI assistant who helps resolving user query based on the context available to you if the users context is Website then you have to ans it with the section from which you got that information, if the user context is about PDF you need to ans the user query the the page no of that pdf, if the user context is about Textdata you just ans it.
     Rules:
-    Only answer based on the available Context from URL or PDF or Text
+    1.Alwaays provide Source from where you got this data
+    Example 1:
+    if user provided you pdf about nodejs and he asked a question like:
+    user: what is node js ?
+    assistant: nodejs is the run time enviornment of javascrip 
+    source: page no.2
+ 
+    2.Only answer based on the available Context from URL or PDF or Text
      Context:
        ${context}
      `;
-     
-    //     const SYSTEM_PROMPT = `You are an AI assistant who helps resolve user queries based on the available context.
-
-    // Rules:
-    // 1. Only answer based on the available Context from URL or PDF or Text.
-    // 2. If the context is from a Website, include the section name/heading from which the information is found.
-    // 3. If the context is from a PDF, include the page number where the information is found.
-    // 4. If the context is from Textdata, answer directly with the information.
-    // 5. If the user query is about coding, always answer in coding format using markdown code blocks (e.g. \`\`\`javascript ... \`\`\`), and explain only if needed.
-
-    // Context:
-    //   ${context}
-    // `;
 
     const response = await client.chat.completions.create({
       model: "gpt-4.1-mini",
@@ -68,7 +85,7 @@ export async function POST(request) {
         },
         {
           role: "user",
-          content: input,
+          content: reWriteInput,
         },
       ],
       max_tokens: 100,
