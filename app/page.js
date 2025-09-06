@@ -25,6 +25,7 @@ import {
 export default function Home() {
   const [messages, setMessage] = useState([]);
   const [input, setInput] = useState("");
+  const [isStartChatting, setStartChatting] = useState(false);
 
   useEffect(() => {
     const saved = localStorage.getItem("messages");
@@ -73,6 +74,7 @@ export default function Home() {
 
       if (res.data.success) {
         setUploading(false);
+        setStartChatting(true);
       }
     } catch (error) {
       console.log("something went wrong to upload data", error);
@@ -190,13 +192,25 @@ export default function Home() {
         <div className="flex flex-col h-fit w-full sm:w-[90%] md:w-[80%] lg:w-[70%] bg-neutral-800 p-2 rounded-xl shadow-md">
           <div className="rounded-lg sm:m-2 p-2 h-[500px] overflow-y-auto shadow scrollbar-hidden">
             {messages.length === 0 ? (
-              <p className="text-2xl text-gray-400 font-bold text-center">
-                {uploading
-                  ? "Upload file or data first"
-                  : "data uploaded now ask.. "}
-              </p>
+              <div>
+                {!uploading ? (
+                  isStartChatting ? (
+                    <p className="text-2xl text-gray-400 font-bold text-center">
+                      Start chatting with your data
+                    </p>
+                  ) : (
+                    <p className="text-2xl text-gray-400 font-bold text-center">
+                      First upload the data
+                    </p>
+                  )
+                ) : (
+                  <p className="text-2xl text-gray-400 font-bold text-center">
+                    Wait, data is uploading...
+                  </p>
+                )}
+              </div>
             ) : (
-              <>
+              <div>
                 {messages.map((msg, idx) => (
                   <div
                     key={idx + msg.role + msg.content.slice(0, 10)}
@@ -224,7 +238,7 @@ export default function Home() {
                     </div>
                   </div>
                 )}
-              </>
+              </div>
             )}
             <div ref={messagesEndRef} />
           </div>

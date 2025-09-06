@@ -45,7 +45,6 @@ export async function POST(request) {
     });
 
     const reWriteInput = googleRes.text;
-    console.log("reWriteInput", reWriteInput);
 
     const vectorStore = await QdrantVectorStore.fromExistingCollection(
       embeddings,
