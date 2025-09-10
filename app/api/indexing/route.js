@@ -7,8 +7,6 @@ import { CheerioWebBaseLoader } from "@langchain/community/document_loaders/web/
 import { GoogleGenerativeAIEmbeddings } from "@langchain/google-genai";
 import { RecursiveCharacterTextSplitter } from "@langchain/textsplitters";
 import { YoutubeLoader } from "@langchain/community/document_loaders/web/youtube";
-import { en } from "zod/v4/locales";
-
 const embeddings = new GoogleGenerativeAIEmbeddings({
   apiKey: process.env.GEMINI_API_KEY,
   model: "models/embedding-001",
