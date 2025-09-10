@@ -44,6 +44,7 @@ export async function POST(request) {
       ],
     });
 
+    //query re-writing
     const reWriteInput = googleRes.text;
 
     const vectorStore = await QdrantVectorStore.fromExistingCollection(
