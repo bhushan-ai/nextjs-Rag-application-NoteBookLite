@@ -6,6 +6,8 @@ import { PDFLoader } from "@langchain/community/document_loaders/fs/pdf";
 import { CheerioWebBaseLoader } from "@langchain/community/document_loaders/web/cheerio";
 import { GoogleGenerativeAIEmbeddings } from "@langchain/google-genai";
 import { RecursiveCharacterTextSplitter } from "@langchain/textsplitters";
+import { YoutubeLoader } from "@langchain/community/document_loaders/web/youtube";
+import { en } from "zod/v4/locales";
 
 const embeddings = new GoogleGenerativeAIEmbeddings({
   apiKey: process.env.GEMINI_API_KEY,
@@ -26,6 +28,7 @@ export async function POST(request) {
 
     const pdf = formData.get("pdf") || null;
     const url = formData.get("url") || "";
+    const ytUrl = formData.get("ytUrl") || "";
     const textData = formData.get("text") || "";
 
     const textSplitter = new RecursiveCharacterTextSplitter({
@@ -44,14 +47,24 @@ export async function POST(request) {
     }
 
     let docs = [];
+    //pdf
     if (pdf) {
       //console.log("pdf", pdf);
       const loader = new PDFLoader(pdf);
       docs = docs.concat(await loader.load());
     } else if (url) {
+      //website
       const loader = new CheerioWebBaseLoader(url);
       docs = await loader.load();
+    } else if (ytUrl) {
+      //ytVideo
+      const loader = YoutubeLoader.createFromUrl(ytUrl, {
+        language: "en",
+        addVideoInfo: true,
+      });
+      docs = await loader.load();
     } else if (newTextData.length > 0) {
+      //textData
       docs = newTextData;
     } else {
       return new Response(

@@ -21,6 +21,7 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { Label } from "@/components/ui/label";
 
 export default function Home() {
   const [messages, setMessage] = useState([]);
@@ -41,6 +42,7 @@ export default function Home() {
   const [textData, setTextData] = useState("");
   const [url, setUrl] = useState("");
   const [pdf, setPdf] = useState(null);
+  const [ytUrl, setYtUrl] = useState("");
   const [pdfLoading, setPdfLoading] = useState(false);
   const [inputType, setInputType] = useState("pdf");
 
@@ -60,6 +62,8 @@ export default function Home() {
         formData.append("pdf", pdf);
       } else if (url) {
         formData.append("url", url);
+      } else if (ytUrl) {
+        formData.append("ytUrl", ytUrl);
       } else {
         formData.append("text", textData);
       }
@@ -139,6 +143,7 @@ export default function Home() {
                   <SelectItem value="pdf">PDF</SelectItem>
                   <SelectItem value="url">URL</SelectItem>
                   <SelectItem value="text">Text</SelectItem>
+                  <SelectItem value="ytUrl">Youtube Video Link</SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -160,6 +165,20 @@ export default function Home() {
                   value={url}
                   onChange={(e) => setUrl(e.target.value)}
                   placeholder="https://example.com"
+                />
+              </div>
+            )}
+
+            {inputType === "ytUrl" && (
+              <div className="flex flex-col gap-3">
+                <Label className="font-semibold text-white">
+                  Enter youtube Video Link
+                </Label>
+                <Input
+                  type="url"
+                  value={ytUrl}
+                  onChange={(e) => setYtUrl(e.target.value)}
+                  placeholder="paste youtube video link here"
                 />
               </div>
             )}
